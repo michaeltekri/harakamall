@@ -11,13 +11,15 @@ import com.tekri.harakamall.ui.screens.dashboard.DashboardScreen
 import com.tekri.harakamall.ui.screens.home.HomeScreen
 import com.tekri.harakamall.ui.screens.intent.IntentScreen
 import com.tekri.harakamall.ui.screens.item.ItemScreen
+import com.tekri.harakamall.ui.screens.service.ServiceScreen
+import com.tekri.harakamall.ui.screens.splash.SplashScreen
 import com.tekri.harakamall.ui.screens.start.StartScreen
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ROUT_DASHBOARD
+    startDestination: String = ROUT_SPLASH
 ) {
 
 
@@ -43,6 +45,12 @@ fun AppNavHost(
         }
         composable(ROUT_DASHBOARD) {
             DashboardScreen (navController=navController)
+        }
+        composable(ROUT_SERVICE) {
+            ServiceScreen (navController=navController)
+        }
+        composable(ROUT_SPLASH) {
+            SplashScreen (navController=navController)
         }
 
     }
