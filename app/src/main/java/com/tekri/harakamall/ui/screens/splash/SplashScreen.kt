@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tekri.harakamall.R
+import com.tekri.harakamall.navigation.ROUT_LOGIN
 import com.tekri.harakamall.navigation.ROUT_START
 import com.tekri.harakamall.ui.theme.neworange
 import kotlinx.coroutines.delay
@@ -37,7 +38,7 @@ fun SplashScreen(navController: NavController){
     val coroutine= rememberCoroutineScope()
     coroutine.launch {
         delay(2000)
-        navController.navigate(ROUT_START)
+        navController.navigate(ROUT_LOGIN)
 
     }
 

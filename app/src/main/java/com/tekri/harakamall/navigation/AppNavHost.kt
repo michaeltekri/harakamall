@@ -2,11 +2,16 @@ package com.tekri.harakamall.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tekri.harakamall.dta.UserDatabase
+import com.tekri.harakamall.repository.UserRepository
 import com.tekri.harakamall.ui.screens.about.AboutScreen
+import com.tekri.harakamall.ui.screens.auth.LoginScreen
+import com.tekri.harakamall.ui.screens.auth.RegisterScreen
 import com.tekri.harakamall.ui.screens.dashboard.DashboardScreen
 import com.tekri.harakamall.ui.screens.form.FormScreen
 import com.tekri.harakamall.ui.screens.form1.Form1Screen
@@ -16,6 +21,7 @@ import com.tekri.harakamall.ui.screens.item.ItemScreen
 import com.tekri.harakamall.ui.screens.service.ServiceScreen
 import com.tekri.harakamall.ui.screens.splash.SplashScreen
 import com.tekri.harakamall.ui.screens.start.StartScreen
+import com.tekri.harakamall.viewmodel.AuthViewModel
 
 @Composable
 fun AppNavHost(
@@ -23,6 +29,7 @@ fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = ROUT_SPLASH
 ) {
+    val context= LocalContext.current
 
 
     NavHost(
@@ -60,6 +67,29 @@ fun AppNavHost(
         composable(ROUT_FORM1) {
             Form1Screen (navController=navController)
         }
+
+        //AUTHENTICATION
+
+        // Initialize Room Database and Repository for Authentication
+        val appDatabase = UserDatabase.getDatabase(context)
+        val authRepository = UserRepository(appDatabase.userDao())
+        val authViewModel: AuthViewModel = AuthViewModel(authRepository)
+        composable(ROUT_REGISTER) {
+            RegisterScreen(authViewModel, navController) {
+                navController.navigate(ROUT_LOGIN) {
+                    popUpTo(ROUT_REGISTER) { inclusive = true }
+                }
+            }
+        }
+
+        composable(ROUT_LOGIN) {
+            LoginScreen(authViewModel, navController) {
+                navController.navigate(ROUT_HOME) {
+                    popUpTo(ROUT_LOGIN) { inclusive = true }
+                }
+            }
+        }
+
 
     }
 }
